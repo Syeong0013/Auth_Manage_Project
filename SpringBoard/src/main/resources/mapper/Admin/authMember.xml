@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Pkg.Admin.AuthMember">
+
+	<select id="selectAuthMember" statementType="CALLABLE" parameterType="Pkg.Admin.VO.AuthMemberDTO" resultMap="Pkg.Admin.maps.AuthMemberMap">
+		{call PKG_ADMIN_MEMBERS.PROC_SEL_MEMBERS(
+			#{	searchMName
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+		 	,#{	result
+		 		, mode=OUT
+		 		, jdbcType=CURSOR
+		 		, javaType=ResultSet
+		 		, resultMap=Pkg.Admin.maps.AuthMemberMap
+		 	  })
+		 } 
+	</select>
+
+	<select id="saveAuthMember" statementType="CALLABLE" parameterType="Pkg.Admin.VO.AuthMemberDTO" resultMap="Pkg.Admin.maps.AuthMemberMap">
+		{call PKG_ADMIN_MEMBERS.PROC_SAVE_MEMBERS(
+			#{	mID
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+			,#{	mName
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+			,#{	authID
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+			,#{	gbn
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+			,#{	mthID
+				, jdbcType = VARCHAR
+				, mode = IN
+			  })
+		 } 
+	</select>
+	
+	<delete id="delAuthMember" statementType="CALLABLE">
+		{call PKG_ADMIN_MEMBERS.PROC_DEL_MEMBERS(
+			#{	mID
+				, jdbcType = VARCHAR
+				, mode = IN
+			  })
+		 } 
+	</delete>
+
+</mapper>

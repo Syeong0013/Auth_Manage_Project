@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       
+<mapper namespace = "Pkg.Admin.MenuList">
+	<select id="selectMenuList" statementType="CALLABLE" parameterType="Pkg.Admin.VO.AuthMenuDTO" resultMap="Pkg.Admin.maps.MenuMap">
+		{call PKG_ADMIN_MENUS.PROC_SEL_MENUS(
+			#{menuId
+			  ,jdbcType=VARCHAR
+			  ,mode=IN
+			  }
+			,#{menuName
+			  ,jdbcType=VARCHAR
+			  ,mode=IN
+			  }
+			,#{result
+			  ,mode=OUT
+			  ,jdbcType=CURSOR
+			  ,javaType=ResultSet
+			  ,resultMap=Pkg.Admin.maps.MenuMap
+			  }
+		)}
+	</select>
+	
+	<select id="selectTopMenuList" statementType="CALLABLE" parameterType="Pkg.Admin.VO.AuthMenuDTO" resultMap="Pkg.Admin.maps.MenuMap">
+		{call PKG_ADMIN_MENUS.PROC_SEL_TOPMENUS(
+			#{menuName
+			  ,jdbcType=VARCHAR
+			  ,mode=IN
+			 }
+			,#{result
+			  ,jdbcType=CURSOR
+			  ,mode=OUT
+			  ,javaType=ResultSet
+			  ,resultMap=Pkg.Admin.maps.MenuMap
+			}
+		)}
+	</select>
+	
+	<select id="saveMenuList" statementType="CALLABLE" parameterType="Pkg.Admin.VO.AuthMenuDTO">
+		{call PKG_ADMIN_MENUS.PROC_SAVE_MENUS(
+			#{menuID
+			  ,jdbcType=VARCHAR
+			  ,mode=IN
+			  }
+			,#{menuName
+			  ,jdbcType=VARCHAR
+			  ,mode=IN
+			  }
+			,#{menuSeq
+			  ,jdbcType=VARCHAR
+			  ,mode=IN
+			  }
+			,#{menuLvl
+			  ,jdbcType=VARCHAR
+			  ,mode=IN
+			  }
+			,#{parentID
+			  ,jdbcType=VARCHAR
+			  ,mode=IN
+			  }
+		)}
+	</select>
+	<select id="deleteMenu">
+		{call PKG_ADMIN_MENUS.PROC_DEL_MENUS(
+			#{menuId
+			  ,jdbcType=VARCHAR
+			  ,mode=IN
+			}
+		)}
+	</select>
+</mapper>
