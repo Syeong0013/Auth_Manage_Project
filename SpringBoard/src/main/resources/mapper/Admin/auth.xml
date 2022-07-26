@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Pkg.Admin.AuthList">
+<!--
+	<resultMap id="boardMap" type="Pkg.Boards.VO.BoardVO">
+	<result column="USERID" property="userID"/>
+	<result column="USERNAME" property="userName"/>
+	</resultMap>
+-->
+
+	<select id="selectAuthList" statementType="CALLABLE" parameterType="Pkg.Admin.VO.AuthDTO" resultMap="Pkg.Admin.maps.AuthMap">
+		{call PKG_ADMIN_AUTH.PROC_SEL_AUTH(
+			#{	authName
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+		 	,#{	result
+		 		, mode=OUT
+		 		, jdbcType=CURSOR
+		 		, javaType=ResultSet
+		 		, resultMap=Pkg.Admin.maps.AuthMap
+		 	  })
+		 } 
+	</select>
+	
+	<select id="saveAuthList" statementType="CALLABLE" parameterType="Pkg.Admin.VO.AuthDTO">
+		{call PKG_ADMIN_AUTH.PROC_SAVE_AUTH(
+			#{	authID
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+		 	,#{	authName
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+			,#{	gbn
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+		 	,#{	errCode
+		 		, mode=OUT
+		 		, jdbcType=VARCHAR
+		 		, javaType=java.lang.String
+		 	  }
+		 	,#{	errMsg
+		 		, mode=OUT
+		 		, jdbcType=VARCHAR
+		 		, javaType=java.lang.String
+		 	  })
+		 } 
+	</select>
+	
+	<select id="delAuthList" statementType="CALLABLE" parameterType="Pkg.Admin.VO.AuthDTO" resultMap="Pkg.Admin.maps.AuthMap">
+		{call PKG_ADMIN_AUTH.PROC_DEL_AUTH(
+			#{	authID
+				, jdbcType = VARCHAR
+				, mode = IN
+			  }
+		 	,#{	errCode
+		 		, mode=OUT
+		 		, jdbcType=VARCHAR
+		 		, javaType=java.lang.String
+		 	  }
+		 	,#{	errMsg
+		 		, mode=OUT
+		 		, jdbcType=VARCHAR
+		 		, javaType=java.lang.String
+		 	  })
+		 } 
+	</select>
+
+</mapper>

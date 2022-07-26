@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +35,12 @@ public class AuthMenuController {
 	@ResponseBody
 	@RequestMapping("SubMenuList")
 	public String getSubMenuList(String smenuName, String menuID) {
-		System.out.println("menuID = " + menuID);
 		List<AuthMenuDTO> submenuList = authMenuService.getSubMenuList(smenuName, menuID);
 		
 		JSONArray arrSubMenuList = new JSONArray();
 		for(AuthMenuDTO dto: submenuList) {
 			JSONObject obj = new JSONObject();
+			obj.put("rootID", menuID);
 			obj.put("menuID", dto.getMenuID());
 			obj.put("menuName", dto.getMenuName());
 			obj.put("menuSeq", dto.getMenuSeq());
@@ -47,12 +49,12 @@ public class AuthMenuController {
 			
 			arrSubMenuList.add(obj);
 		}
+		
 		return arrSubMenuList.toString();
 	}
 	
 	@RequestMapping("SaveMenuList")
 	public String saveMenuList(String[] menuID, String[] menuName, String[] menuSeq, String[] menuLvl, String[] parentID, String[] hidVal) {
-	
 		Map<String, String[]> params = new HashMap<String, String[]>();
 		params.put("menuID", menuID);
 		params.put("menuName", menuName);
@@ -65,9 +67,24 @@ public class AuthMenuController {
 		return "redirect:MenuList";
 	}
 	
+	@RequestMapping("SaveSubMenuList")
+	public String saveSubMenuList(String rootID, String[] menuID, String[] menuName, String[] menuSeq, String[] menuLvl, String[] parentID, String[] hidVal, HttpServletRequest request){
+		Map<String, String[]> params = new HashMap<String, String[]>();
+		params.put("menuID", menuID);
+		params.put("menuName", menuName);
+		params.put("menuSeq", menuSeq);
+		params.put("menuLvl", menuLvl);
+		params.put("parentID", parentID);
+		params.put("hidVal", hidVal);
+		
+		authMenuService.saveMenuList(params);
+		
+		return "redirect:MenuList?rootID="+rootID;
+	}
+	
 	@RequestMapping("delMenus")
-	public String removeMenu(String[] delMenuID) {
+	public String removeMenu(String rootID, String[] delMenuID) {
 		authMenuService.removeMenu(delMenuID);
-		return "redirect:MenuList";
+		return "redirect:MenuList?rootID="+rootID;
 	}
 }

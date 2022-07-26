@@ -13,19 +13,19 @@
 		}
 		
 		#wrap{                                                                                                                                                                                                                                                                           
-			width:900px;
+			width:700px;
 			margin:auto;
 		}
 		
 		.search{
-			width:900px;
+			width:700px;
 			border:0px solid red;
 			padding:4px 0px 4px 0px;
 			clear:both;
 		}
 		
 		.row{
-			width:900px;
+			width:700px;
 			border:0px solid red;
 			/*padding:4px 0px 4px 0px;*/
 			clear:both;
